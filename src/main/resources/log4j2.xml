@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- status=debug 可以查看log4j的装配过程 -->
+<configuration status="warn" monitorInterval="1800">
+    <properties>
+        <property name="log.home">log</property>
+        <property name="error.name">error</property>
+        <property name="debug.name">debug</property>
+        <property name="log.pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [%t] - %l - %msg%n%throwable</property>
+    </properties>
+
+    <appenders>
+
+        <!-- 邮件输出 -->
+        <SMTP name="Mail" subject="gsxt-crawler" to="youfeng@haizhi.com"
+              from="datamonitor@haizhi.com"
+              smtpProtocol="smtp" smtpHost="smtp.weibangong.com" smtpPort="465" bufferSize="50" smtpDebug="false"
+              smtpPassword="LcoS!WKXmWmFu2Or" smtpUsername="datamonitor@haizhi.com">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+        </SMTP>
+
+        <!-- 控制台输出 -->
+        <Console name="Console" target="SYSTEM_OUT" follow="true">
+            <PatternLayout pattern="${log.pattern}"/>
+        </Console>
+
+        <!-- 调试日志 -->
+        <RollingRandomAccessFile name="debug_log" fileName="${log.home}/${debug.name}.log"
+                                 filePattern="${log.home}/${debug.name}_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${log.pattern}"/>
+            <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+
+            <!--删除日志规则 -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${log.home}" maxDepth="1">
+                    <IfFileName glob="{debug.name}_*.log" />
+                    <IfLastModified age="7d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+
+        </RollingRandomAccessFile>
+
+        <!-- 错误级别日志 -->
+        <RollingRandomAccessFile name="error_log" fileName="${log.home}/${error.name}.log"
+                                 filePattern="${log.home}/${error.name}_%d{yyyy-MM-dd}.log">
+            <PatternLayout pattern="${log.pattern}"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+
+            <!--删除日志规则 -->
+            <DefaultRolloverStrategy>
+                <Delete basePath="${log.home}" maxDepth="1">
+                    <IfFileName glob="{error.name}_*.log" />
+                    <IfLastModified age="15d" />
+                </Delete>
+            </DefaultRolloverStrategy>
+
+        </RollingRandomAccessFile>
+    </appenders>
+
+    <loggers>
+
+        <!-- Root Logger -->
+        <root level="info">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="debug_log"/>
+            <appender-ref ref="error_log"/>
+            <appender-ref ref="Mail"/>
+        </root>
+
+    </loggers>
+</configuration>

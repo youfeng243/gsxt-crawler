@@ -1,0 +1,11 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+logger.txt
+mongdb.iml
+target/
+/log/
+/mongodb-export-hbase.iml
+/lib/
+/bin/
+/conf/
+/gsxt-crawler.iml
