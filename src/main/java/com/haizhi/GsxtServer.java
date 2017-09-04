@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.eq;
+
 /**
  * Created by youfeng on 2017/9/4.
  * 工商抓取启动入库
@@ -38,7 +40,8 @@ public class GsxtServer {
         String authdb = PropertyUtil.getProperty("mongo.auth.db");
         Mongo mongo = new Mongo(host, username, password, authdb);
         MongoDatabase database = mongo.getDb(PropertyUtil.getProperty("mongo.database"));
-        MongoCursor<Document> cursor = database.getCollection(PropertyUtil.getProperty("mongo.collection")).find().iterator();
+        MongoCursor<Document> cursor = database.getCollection(PropertyUtil.getProperty("mongo.collection")).
+                find(eq("province", "gansu")).batchSize(100).iterator();
         try (Ignite ignite = Ignition.start("example-ignite.xml")) {
             logger.info("启动任务调度...");
 
