@@ -1,7 +1,9 @@
 package com.haizhi.base;
 
+import com.haizhi.tools.ChromeDowner;
 import com.haizhi.util.Config;
 import com.haizhi.util.HttpUtils;
+import com.haizhi.util.ProxyUtils;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.ignite.lang.IgniteRunnable;
 import org.slf4j.Logger;
@@ -28,26 +30,9 @@ public class GsxtRunnable implements IgniteRunnable {
         this.host = host;
     }
 
-    //获取代理信息
-    private String getProxy() {
-        String url = Config.PROXY_URL + host;
-        CloseableHttpClient closeableHttpClient = HttpUtils.createHttpClient();
-        String result = HttpUtils.get(closeableHttpClient, url, 5, null);
-        try {
-            closeableHttpClient.close();
-        } catch (IOException e) {
-            logger.error("关闭httpclient失败: ", e);
-        }
-        return result;
-    }
-
-
-    @Override
-    public void run() {
-        logger.info("开始抓取: {} {}", province, company);
-
+    public void work() {
         //获取代理信息
-        String proxyStr = getProxy();
+        String proxyStr = ProxyUtils.getProxy(host);
         if (proxyStr == null) {
             logger.warn("获取代理失败，不进行抓取任务...");
             return;
@@ -56,11 +41,28 @@ public class GsxtRunnable implements IgniteRunnable {
         //封装代理信息
         HttpProxy httpProxy = HttpProxy.build(proxyStr);
         logger.info("获取到的代理信息为: {}", httpProxy.toStringUserAndpwd());
+
+        //初始化浏览器
         try {
-            Thread.sleep(3000);
+            ChromeDowner chrome = new ChromeDowner(60000, company, httpProxy);
+            chrome.insideDown("http://www.gsxt.gov.cn/index.html");
+            chrome.insideColose();
+        } catch (Exception e) {
+            logger.error("浏览器异常: ", e);
+        }
+
+        try {
+            Thread.sleep(10000);
         } catch (InterruptedException e) {
             logger.error("休眠被中断: ", e);
         }
+    }
+
+    @Override
+    public void run() {
+        logger.info("开始抓取: {} {}", province, company);
+
+        work();
 
         logger.info("抓取完成: {} {}", province, company);
     }

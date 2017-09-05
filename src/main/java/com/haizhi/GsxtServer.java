@@ -72,7 +72,7 @@ public class GsxtServer {
                 IgniteRunnable task = new GsxtRunnable(province, company, host);
                 task_list.add(task);
 
-                // 如果已经添加是个人物了 则先执行完成 再继续
+                // 如果已经添加10个任务了 则先执行完成 再继续
                 if (task_list.size() >= taskPoolNum) {
                     ignite.compute().runAsync(task_list).get();
                     task_list.clear();
