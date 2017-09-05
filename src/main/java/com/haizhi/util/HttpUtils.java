@@ -1,6 +1,7 @@
 package com.haizhi.util;
 
 
+import com.haizhi.base.HttpProxy;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
@@ -37,11 +38,19 @@ public class HttpUtils {
         return HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
     }
 
+    public static CloseableHttpClient createProxyHttpClient(HttpProxy httpProxy) {
+        CredentialsProvider credsProvider = new BasicCredentialsProvider();
+        AuthScope authScope = new AuthScope(httpProxy.getHost(), httpProxy.getPort());
+        Credentials credentials = new UsernamePasswordCredentials(httpProxy.getUserName(), httpProxy.getPassWord());
+        credsProvider.setCredentials(authScope, credentials);
+        return HttpClients.custom().setDefaultCredentialsProvider(credsProvider).build();
+    }
+
     public static CloseableHttpClient createHttpClient() {
         return HttpClients.custom().build();
     }
 
-    public static String get(CloseableHttpClient httpClient, String url, Map<String, String> map, int timeOut) {
+    public static String get(CloseableHttpClient httpClient, String url, int timeOut, Map<String, String> map) {
         RequestConfig config;
         CloseableHttpResponse response = null;
         URIBuilder uriBuilder;

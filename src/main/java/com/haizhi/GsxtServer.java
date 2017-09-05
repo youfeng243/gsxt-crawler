@@ -2,6 +2,7 @@ package com.haizhi;
 
 import com.haizhi.base.GsxtRunnable;
 import com.haizhi.mongo.Mongo;
+import com.haizhi.util.Config;
 import com.haizhi.util.PropertyUtil;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -28,17 +29,18 @@ public class GsxtServer {
     static {
         //先装在配置信息
         PropertyUtil.loadProperties();
+        Config.init();
         logger.info("加载配置完成...");
     }
 
     public static void main(String... args) {
         logger.info("启动工商抓取程序...");
         int taskPoolNum = PropertyUtil.getInt("task.pool.num");
-        String host = PropertyUtil.getProperty("mongo.host");
+        String mongoHost = PropertyUtil.getProperty("mongo.host");
         String username = PropertyUtil.getProperty("mongo.username");
         String password = PropertyUtil.getProperty("mongo.password");
         String authdb = PropertyUtil.getProperty("mongo.auth.db");
-        Mongo mongo = new Mongo(host, username, password, authdb);
+        Mongo mongo = new Mongo(mongoHost, username, password, authdb);
         MongoDatabase database = mongo.getDb(PropertyUtil.getProperty("mongo.database"));
         MongoCursor<Document> cursor = database.getCollection(PropertyUtil.getProperty("mongo.collection")).
                 find(eq("province", "gansu")).batchSize(100).iterator();
@@ -55,10 +57,19 @@ public class GsxtServer {
 
                 //获得省份信息
                 String province = document.getString("province");
+
                 //获得企业信息
                 String company = document.getString("company_name");
 
-                IgniteRunnable task = new GsxtRunnable(province, company);
+                //获得host信息
+                String host = PropertyUtil.getProperty("host." + province);
+
+                if (province == null || company == null || host == null) {
+                    logger.error("抓取参数错误: " + province + " " + company + " " + host);
+                    continue;
+                }
+
+                IgniteRunnable task = new GsxtRunnable(province, company, host);
                 task_list.add(task);
 
                 // 如果已经添加是个人物了 则先执行完成 再继续
@@ -67,9 +78,13 @@ public class GsxtServer {
                     task_list.clear();
                 }
             }
+            if (task_list.size() > 0) {
+                ignite.compute().runAsync(task_list).get();
+            }
         } catch (Exception e) {
             logger.error("任务调度异常: ", e);
         }
+
         cursor.close();
         mongo.close();
         logger.info("退出工商抓取程序...");

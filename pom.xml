@@ -17,6 +17,7 @@
         <java.version>1.8</java.version>
         <javax.cache.version>1.0.0</javax.cache.version>
         <apache.ignite.version>2.1.0</apache.ignite.version>
+        <commons-lang3>3.5</commons-lang3>
     </properties>
 
     <dependencies>
@@ -28,6 +29,12 @@
             <version>4.5.2</version>
         </dependency>
 
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3}</version>
+        </dependency>
 
         <!--*************************apache ignite*******************************************-->
         <dependency>

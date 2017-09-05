@@ -52,42 +52,42 @@ public class PropertyUtil {
     }
 
     public static String getProperty(String key) {
-        logger.info("[getProperty] key->{}, value->{}", key, props.getProperty(key));
+        //logger.info("[getProperty] key->{}, value->{}", key, props.getProperty(key));
         return props.getProperty(key);
     }
 
     public static String getProperty(String key, String defaultValue) {
-        logger.info("[getProperty] key->{}, defaultValue->{}, value->{}", key, defaultValue, props.getProperty(key));
+        //logger.info("[getProperty] key->{}, defaultValue->{}, value->{}", key, defaultValue, props.getProperty(key));
         return props.getProperty(key, defaultValue);
     }
 
     public static Integer getInt(String key) {
-        logger.info("[getInt] key->{}, value->{}", key, Integer.parseInt(props.getProperty(key)));
+        //logger.info("[getInt] key->{}, value->{}", key, Integer.parseInt(props.getProperty(key)));
         return Integer.parseInt(props.getProperty(key));
     }
 
     public static Long getLong(String key) {
-        logger.info("[getInt] key->{}, value->{}", key, Integer.parseInt(props.getProperty(key)));
+        //logger.info("[getInt] key->{}, value->{}", key, Integer.parseInt(props.getProperty(key)));
         return Long.parseLong(props.getProperty(key));
     }
 
     public static Long getLong(String key, long defaultValue) {
-        logger.info("[getLong] key->{}, defaultValue->{}, value->{}", key, defaultValue, Long.parseLong(props.getProperty(key, String.valueOf(defaultValue))));
+        //logger.info("[getLong] key->{}, defaultValue->{}, value->{}", key, defaultValue, Long.parseLong(props.getProperty(key, String.valueOf(defaultValue))));
         return Long.parseLong(props.getProperty(key, String.valueOf(defaultValue)));
     }
 
     public static Integer getInt(String key, String defaultValue) {
-        logger.info("[getInt] key->{}, defaultValue->{}, value->{}", key, defaultValue, Integer.parseInt(props.getProperty(key, defaultValue)));
+        //logger.info("[getInt] key->{}, defaultValue->{}, value->{}", key, defaultValue, Integer.parseInt(props.getProperty(key, defaultValue)));
         return Integer.parseInt(props.getProperty(key, defaultValue));
     }
 
     public static Boolean getBoolean(String key) {
-        logger.info("[getBoolean] key->{}, value->{}", key, Boolean.valueOf(props.getProperty(key)));
+        //logger.info("[getBoolean] key->{}, value->{}", key, Boolean.valueOf(props.getProperty(key)));
         return Boolean.valueOf(props.getProperty(key));
     }
 
     public static Boolean getBoolean(String key, String defaultValue) {
-        logger.info("[getBoolean] key->{}, defaultValue->{}, value->{}", key, defaultValue, Boolean.valueOf(props.getProperty(key, defaultValue)));
+        //logger.info("[getBoolean] key->{}, defaultValue->{}, value->{}", key, defaultValue, Boolean.valueOf(props.getProperty(key, defaultValue)));
         return Boolean.valueOf(props.getProperty(key, defaultValue));
     }
 }
