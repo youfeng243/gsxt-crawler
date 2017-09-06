@@ -74,12 +74,12 @@ public class GsxtServer {
 
                 // 如果已经添加10个任务了 则先执行完成 再继续
                 if (task_list.size() >= taskPoolNum) {
-                    ignite.compute().runAsync(task_list).get();
+                    compute.runAsync(task_list).get();
                     task_list.clear();
                 }
             }
             if (task_list.size() > 0) {
-                ignite.compute().runAsync(task_list).get();
+                compute.runAsync(task_list).get();
             }
         } catch (Exception e) {
             logger.error("任务调度异常: ", e);

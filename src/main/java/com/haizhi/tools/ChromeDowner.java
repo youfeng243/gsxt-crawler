@@ -85,8 +85,8 @@ public class ChromeDowner {
         Map<String, Object> prefs = new HashMap<>();
         prefs.put("profile.managed_default_content_settings", settings);
         ChromeOptions options = new ChromeOptions();
-        System.setProperty("webdriver.chrome.driver", "/Users/you/IdeaProjects/gsxt-crawler/src/main/resources/webdriver/chrome/chromedriver_mac");
-        String chromePath = "/Users/you/IdeaProjects/gsxt-crawler/src/main/resources/webdriver/chrome";
+        System.setProperty("webdriver.chrome.driver", "/tmp/chromedriver_mac");
+        String chromePath = "/tmp";
 
 
         options.addArguments("--headless");
@@ -97,7 +97,7 @@ public class ChromeDowner {
 
         if (StringUtils.isNotBlank(httpProxy.getUserName())) {
             try {
-                String proxyExtensionPath = getChromeProxyExtension("/tmp", workName, httpProxy.toStringUserAndpwd());
+                String proxyExtensionPath = getChromeProxyExtension(chromePath, workName, httpProxy.toStringUserAndpwd());
                 //options.addExtensions(new File(proxyExtensionPath));
             } catch (IOException e) {
                 logger.error("", e);

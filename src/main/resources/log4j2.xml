@@ -69,7 +69,7 @@
             <appender-ref ref="Console"/>
             <appender-ref ref="debug_log"/>
             <appender-ref ref="error_log"/>
-            <appender-ref ref="Mail"/>
+            <!--<appender-ref ref="Mail"/>-->
         </root>
 
     </loggers>
