@@ -16,7 +16,8 @@ public class ProxyUtils {
 
     //获取代理信息
     public static String getProxy(String host) {
-        String url = Config.PROXY_URL + host;
+        String url = "http://172.18.180.225:9300/proxy/" + host;
+        logger.info("当前访问url = {}", url);
         CloseableHttpClient closeableHttpClient = HttpUtils.createHttpClient();
         String result = HttpUtils.get(closeableHttpClient, url, 5, null);
         try {
