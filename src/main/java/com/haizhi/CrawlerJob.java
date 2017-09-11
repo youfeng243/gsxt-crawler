@@ -102,66 +102,16 @@ public class CrawlerJob {
     // 执行次数， 周期性任务  与 有限次数任务
     // 任务成功与失败的定义， 粒度划分 某一个网页失败  算不算失败
 
+    //任务最大可申请次数 0 代表可以无限次申请， 其他代表可以申请的次数
+    private int maxEnableApplyTimes;
+
     // 任务申请执行次数
     private int applyTimes;
+
+    // 最大可执行次数 0 代表可以无限次执行
+    private int maxExecutableTimes;
 
     // 任务批准执行次数
     private int ratifyTimes;
 
-
-    public int getPriority() {
-        return priority;
-    }
-
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
-    public int getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(int jobType) {
-        this.jobType = jobType;
-    }
-
-    public int getScheduleType() {
-        return scheduleType;
-    }
-
-    public void setScheduleType(int scheduleType) {
-        this.scheduleType = scheduleType;
-    }
-
-    public List<Pair<String, String>> getScheduleTimeList() {
-        return scheduleTimeList;
-    }
-
-    public void setScheduleTimeList(List<Pair<String, String>> scheduleTimeList) {
-        this.scheduleTimeList = scheduleTimeList;
-    }
-
-    public int getScheduleStatus() {
-        return scheduleStatus;
-    }
-
-    public void setScheduleStatus(int scheduleStatus) {
-        this.scheduleStatus = scheduleStatus;
-    }
-
-    public int getApplyTimes() {
-        return applyTimes;
-    }
-
-    public void setApplyTimes(int applyTimes) {
-        this.applyTimes = applyTimes;
-    }
-
-    public int getRatifyTimes() {
-        return ratifyTimes;
-    }
-
-    public void setRatifyTimes(int ratifyTimes) {
-        this.ratifyTimes = ratifyTimes;
-    }
 }
