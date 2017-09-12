@@ -77,7 +77,7 @@ public class CrawlerJob {
     private int periodType;
 
     //弹性调度时间段定义
-    private List<Pair<String, String>> scheduleTimeList;
+    private List<Pair<String, String>> periodTimeList;
 
 
     /**
