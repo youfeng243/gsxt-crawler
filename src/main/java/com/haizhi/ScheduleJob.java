@@ -8,7 +8,22 @@ import java.util.List;
  * Created by youfeng on 2017/9/7.
  * 抓取任务调度类
  */
-public class CrawlerJob {
+public class ScheduleJob {
+
+    //任务名称
+    private String jobName;
+
+    /**
+     * 任务类型
+     */
+    //系统级任务 走不通的任务运行通道 重要任务放入系统级
+    public static final int SYSTEM_JOB = 0;
+
+    //常规任务
+    public static final int NORMAL_JOB = 1;
+
+    private int jobType;
+
 
     /**
      * 任务优先级 根据任务重要性
@@ -21,20 +36,25 @@ public class CrawlerJob {
     // 调度优先级
     private int priority;
 
+//    /**
+//     * 任务类型 按任务执行粒度设定
+//     **/
+//    //短周期任务 1小时以内
+//    public static final int JOB_TYPE_SHORT = 1;
+//
+//    //中等周期任务 天级任务
+//    public static final int JOB_TYPE_MIDDLE = 2;
+//
+//    //长周期任务 月级别 或者年级别 长期运行任务
+//    public static final int JOB_TYPE_LONGEST = 3;
+//
+//    // 任务类型
+//    private int jobType;
+
     /**
-     * 任务类型 按任务执行粒度设定
-     **/
-    //短周期任务 1小时以内
-    public static final int JOB_TYPE_SHORT = 1;
-
-    //中等周期任务 天级任务
-    public static final int JOB_TYPE_MIDDLE = 2;
-
-    //长周期任务 月级别 或者年级别 长期运行任务
-    public static final int JOB_TYPE_LONGEST = 3;
-
-    // 任务类型
-    private int jobType;
+     * 调度权重，根据时间，优先级，延迟调度时间度量
+     */
+    private int weight;
 
     /**
      * 调度类型
@@ -45,7 +65,7 @@ public class CrawlerJob {
     //弹性时间段调度方式 在指定时间段内才有调度申请机会
     public static final int SCHEDULE_TYPE_FLEX = 2;
 
-    //资源闲时调度方式 检测到资源空闲时 扫描任务进行发起调度申请
+    //资源闲时调度方式 检测到资源空闲时 扫描任务进行发起调度申请 资源闲时任务可以认为是实时任务
     public static final int SCHEDULE_TYPE_IDLE = 3;
 
     //手动调度方式 通过web界面配置进行启停 一般属于一次性采集脚本 暂搁置
@@ -76,6 +96,10 @@ public class CrawlerJob {
     //弹性调度类型
     private int periodType;
 
+    //任务发起申请时间间隔 在可申请时间段内 周期性发起调度申请，直到批准调度 该值可能为固定值比如: 2秒
+    //根据发起申请周期可以计算出能够发起申请的次数
+    // private int periodTime;
+
     //弹性调度时间段定义
     private List<Pair<String, String>> periodTimeList;
 
@@ -87,7 +111,7 @@ public class CrawlerJob {
     // init 初始化状态
     public static final int STATUS_INIT = 0;
 
-    //已准备好 可运行状态
+    //已准备好 加入待执行队列可运行状态
     public static final int STATUS_READY = 1;
 
     //正在执行状态
@@ -120,22 +144,34 @@ public class CrawlerJob {
     private int scheduleEnable;
 
 
+//    /**
+//     * 任务并发数目, 控制任务执行窗口
+//     */
+//    private int threadNum;
+
+
     //任务当前执行进度 监控进度
     private String progress;
 
     // 执行次数， 周期性任务  与 有限次数任务
     // 任务成功与失败的定义， 粒度划分 某一个网页失败  算不算失败
 
-    //任务最大可申请次数 0 代表可以无限次申请， 其他代表可以申请的次数
-    private int maxApplyTimes;
+    //任务可运行次数 0为无限制运行
+    private int enableRunTimes;
 
-    // 任务申请执行次数
-    private int applyTimes;
+    //任务已经运行次数
+    private int curRunTimes;
 
-    // 最大可执行次数 0 代表可以无限次执行
-    private int maxRatifyTimes;
-
-    // 任务批准执行次数
-    private int ratifyTimes;
+//    //任务最大可申请次数 0 代表可以无限次申请， 其他代表可以申请的次数
+//    private int maxApplyTimes;
+//
+//    // 任务申请执行次数
+//    private int applyTimes;
+//
+//    // 最大可执行次数 0 代表可以无限次执行
+//    private int maxRatifyTimes;
+//
+//    // 任务批准执行次数
+//    private int ratifyTimes;
 
 }
