@@ -120,20 +120,20 @@ public class CrawlerJob {
     private int scheduleEnable;
 
 
-    //任务当前执行进度 供监控用
+    //任务当前执行进度 监控进度
     private String progress;
 
     // 执行次数， 周期性任务  与 有限次数任务
     // 任务成功与失败的定义， 粒度划分 某一个网页失败  算不算失败
 
     //任务最大可申请次数 0 代表可以无限次申请， 其他代表可以申请的次数
-    private int maxEnableApplyTimes;
+    private int maxApplyTimes;
 
     // 任务申请执行次数
     private int applyTimes;
 
     // 最大可执行次数 0 代表可以无限次执行
-    private int maxExecutableTimes;
+    private int maxRatifyTimes;
 
     // 任务批准执行次数
     private int ratifyTimes;
