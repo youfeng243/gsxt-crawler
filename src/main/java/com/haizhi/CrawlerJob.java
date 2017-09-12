@@ -57,7 +57,26 @@ public class CrawlerJob {
     //调度时间 固定类型 需要设置的时间 crontab 方式  时间  月 年份 不同的调度情况
     private String scheduleCronTime;
 
-    // 弹性时间调度需要的起始结束时间段 时间段跨度  日 月 年 固定 和弹性时间 使用时间戳确认时间段
+    /**
+     * 弹性时间调度需要的起始结束时间段 时间段跨度  日 月 年 固定 和弹性时间 使用时间戳确认时间段
+     * 弹性调度周期， 每日弹性， 每月弹性， 每年弹性， 固定次数 时间戳方式
+     */
+    // 在每天的某些时间段进行调度
+    public static final int PERIOD_DAILY = 0;
+
+    // 按每月周期调度， 在每个月中 某个时间段进行调度
+    public static final int PERIOD_MONTH = 1;
+
+    // 按每年周期调度，在一年中 某个时间段需要被调度
+    public static final int PERIOD_YEAR = 2;
+
+    //固定次数 以时间戳方式表示时间段
+    public static final int PERIOD_FINAL = 3;
+
+    //弹性调度类型
+    private int periodType;
+
+    //弹性调度时间段定义
     private List<Pair<String, String>> scheduleTimeList;
 
 
@@ -80,6 +99,8 @@ public class CrawlerJob {
     // 任务已经调度完成状态
     public static final int STATUS_FINISH = 4;
 
+    // 任务被强制中止 任务结束
+    public static final int STATUS_STOP = 5;
 
     //当前任务调度状态 可不可以调度 运行状态
     private int scheduleStatus;
@@ -98,6 +119,9 @@ public class CrawlerJob {
     // 任务是否可以被调度
     private int scheduleEnable;
 
+
+    //任务当前执行进度 供监控用
+    private String progress;
 
     // 执行次数， 周期性任务  与 有限次数任务
     // 任务成功与失败的定义， 粒度划分 某一个网页失败  算不算失败
